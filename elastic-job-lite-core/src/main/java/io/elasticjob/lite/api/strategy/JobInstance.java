@@ -26,7 +26,9 @@ import java.lang.management.ManagementFactory;
 
 /**
  * 作业运行实例.
- * 
+ *
+ * RequiredArgsConstructor：生成一个包含常量和标识了notNull的变量的构造函数。生成的构造方式是private。
+ *
  * @author zhangliang
  */
 @RequiredArgsConstructor
@@ -42,6 +44,8 @@ public final class JobInstance {
     private final String jobInstanceId;
     
     public JobInstance() {
+        //实例id，${ip}+"@-@"+${PID},PID为进程号
+        //不同的作业使用相同的作业实例主键
         jobInstanceId = IpUtils.getIp() + DELIMITER + ManagementFactory.getRuntimeMXBean().getName().split("@")[0];
     }
     

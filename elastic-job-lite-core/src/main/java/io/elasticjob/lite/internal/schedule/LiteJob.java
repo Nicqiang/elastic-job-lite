@@ -11,6 +11,8 @@ import org.quartz.JobExecutionException;
 /**
  * Lite调度作业.
  *
+ * Quartz到达调度时间时，会创建该对象进行执行#execute()
+ *
  * @author zhangliang
  */
 public final class LiteJob implements Job {
@@ -23,6 +25,7 @@ public final class LiteJob implements Job {
     
     @Override
     public void execute(final JobExecutionContext context) throws JobExecutionException {
+        //通过JobExecutorFactory获取作业执行器AbstractElasticJobExecutor，并进行执行
         JobExecutorFactory.getJobExecutor(elasticJob, jobFacade).execute();
     }
 }

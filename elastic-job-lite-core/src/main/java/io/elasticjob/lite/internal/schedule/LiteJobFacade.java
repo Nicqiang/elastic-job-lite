@@ -48,19 +48,41 @@ import java.util.List;
  */
 @Slf4j
 public final class LiteJobFacade implements JobFacade {
-    
+
+    /**
+     * 作业配置服务
+     */
     private final ConfigurationService configService;
-    
+
+    /**
+     * 作业分片服务
+     */
     private final ShardingService shardingService;
-    
+
+    /**
+     * 作业运行上下文服务
+     */
     private final ExecutionContextService executionContextService;
-    
+
+    /**
+     * 作业执行服务
+     */
     private final ExecutionService executionService;
-    
+
+    /**
+     * 作业失效转移服务
+     */
     private final FailoverService failoverService;
-    
+
+
+    /**
+     * 作业监听器
+     */
     private final List<ElasticJobListener> elasticJobListeners;
-    
+
+    /**
+     * 作业事件总线
+     */
     private final JobEventBus jobEventBus;
     
     public LiteJobFacade(final CoordinatorRegistryCenter regCenter, final String jobName, final List<ElasticJobListener> elasticJobListeners, final JobEventBus jobEventBus) {

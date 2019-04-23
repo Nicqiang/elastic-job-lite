@@ -30,16 +30,27 @@ import org.quartz.TriggerKey;
 
 /**
  * 作业调度控制器.
+ * 提供对Quartz方法的封装
  * 
  * @author zhangliang
  */
 @RequiredArgsConstructor
 public final class JobScheduleController {
-    
+
+    /**
+     * quartz 的调度器
+     */
     private final Scheduler scheduler;
-    
+
+    /**
+     * 作业信息
+     */
     private final JobDetail jobDetail;
-    
+
+    /**
+     * 触发器编号
+     * 使用，jobName
+     */
     private final String triggerIdentity;
     
     /**

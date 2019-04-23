@@ -52,6 +52,7 @@ public final class JobProperties {
             return;
         }
         map.put(jobPropertiesEnum, value);
+
     }
     
     /**

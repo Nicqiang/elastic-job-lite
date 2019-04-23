@@ -27,27 +27,53 @@ import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 作业注册表.
- * 
+ * 维护了单个Elastic-job-lite进程内作业相关信息
+ * 类似spring IOC
  * @author zhangliang
  * @author caohao
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class JobRegistry {
-    
+
+    /**
+     * 单例
+     */
     private static volatile JobRegistry instance;
-    
+
+    /**
+     * 作业调度控制器的集合
+     * key => 作业名称
+     * 通过作业名称表示作业的唯一性
+     */
     private Map<String, JobScheduleController> schedulerMap = new ConcurrentHashMap<>();
-    
+
+    /**
+     * 注册中心集合
+     * key => 作业名称
+     */
     private Map<String, CoordinatorRegistryCenter> regCenterMap = new ConcurrentHashMap<>();
-    
+
+    /**
+     * 作业运行实例集合
+     * key => 作业名称
+     */
     private Map<String, JobInstance> jobInstanceMap = new ConcurrentHashMap<>();
-    
+
+    /**
+     * 运行中作业集合
+     * key => 作业名称
+     */
     private Map<String, Boolean> jobRunningMap = new ConcurrentHashMap<>();
-    
+
+    /**
+     * 作业分片数量集合
+     * key => 走也名称
+     */
     private Map<String, Integer> currentShardingTotalCountMap = new ConcurrentHashMap<>();
     
     /**
      * 获取作业注册表实例.
+     * dobule check
      * 
      * @return 作业注册表实例
      */

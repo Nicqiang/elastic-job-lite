@@ -38,6 +38,9 @@ public final class DataflowJobConfiguration implements JobTypeConfiguration {
     private final JobType jobType = JobType.DATAFLOW;
     
     private final String jobClass;
-    
+
+    /**
+     * 是否流式处理数据
+     */
     private final boolean streamingProcess;
 }

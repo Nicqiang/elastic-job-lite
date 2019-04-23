@@ -21,7 +21,15 @@ import io.elasticjob.lite.api.JobType;
 
 /**
  * 作业类型配置.
- * 
+ *
+ * 简单作业
+ * {@link io.elasticjob.lite.api.simple.SimpleJob}
+ * 数据流作业
+ * {@link io.elasticjob.lite.api.dataflow.DataflowJob}
+ *
+ * #脚本作业
+ * {@link io.elasticjob.lite.api.script.ScriptJob}
+ *
  * @author caohao
  * @author zhangliang
  */

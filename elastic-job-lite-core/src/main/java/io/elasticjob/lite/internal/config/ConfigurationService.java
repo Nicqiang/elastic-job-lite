@@ -27,14 +27,23 @@ import io.elasticjob.lite.util.env.TimeService;
 
 /**
  * 弹性化分布式作业配置服务.
+ * 多个Elastic-job-Lite使用相同注册中心和相同的namespace组成集群，实现高可用
+ * 集群中，使用作业配置服务（ConfigurationServer）共享作业配置
  * 
  * @author zhangliang
  * @author caohao
  */
 public final class ConfigurationService {
-    
+
+    /**
+     * 时间服务
+     */
     private final TimeService timeService;
-    
+
+
+    /**
+     * 作业节点数据访问类
+     */
     private final JobNodeStorage jobNodeStorage;
     
     public ConfigurationService(final CoordinatorRegistryCenter regCenter, final String jobName) {
@@ -68,11 +77,17 @@ public final class ConfigurationService {
      */
     public void persist(final LiteJobConfiguration liteJobConfig) {
         checkConflictJob(liteJobConfig);
+
+        //如果注册中心未存储改作业，或者当前作业配置允许替换注册中心作业配置时，持久化作业配置
         if (!jobNodeStorage.isJobNodeExisted(ConfigurationNode.ROOT) || liteJobConfig.isOverwrite()) {
             jobNodeStorage.replaceJobNode(ConfigurationNode.ROOT, LiteJobConfigurationGsonFactory.toJson(liteJobConfig));
         }
     }
-    
+
+    /**
+     * 检验注册中心存储的作业配置的作业实现类全路径和当前的是否相同，如果不相同，则认为冲突
+     * @param liteJobConfig
+     */
     private void checkConflictJob(final LiteJobConfiguration liteJobConfig) {
         Optional<LiteJobConfiguration> liteJobConfigFromZk = find();
         if (liteJobConfigFromZk.isPresent() && !liteJobConfigFromZk.get().getTypeConfig().getJobClass().equals(liteJobConfig.getTypeConfig().getJobClass())) {
