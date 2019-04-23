@@ -28,9 +28,18 @@ import java.util.concurrent.ExecutorService;
  * @author zhangliang
  */
 public final class DefaultExecutorServiceHandler implements ExecutorServiceHandler {
-    
+
+
+    /**
+     * 核心数*2
+     * 先吃名称inner-job-${jobName}
+     * @param jobName 作业名
+     *
+     * @return
+     */
     @Override
     public ExecutorService createExecutorService(final String jobName) {
-        return new ExecutorServiceObject("inner-job-" + jobName, Runtime.getRuntime().availableProcessors() * 2).createExecutorService();
+        return new ExecutorServiceObject("inner-job-" + jobName, Runtime.getRuntime().availableProcessors() * 2)
+                .createExecutorService();
     }
 }

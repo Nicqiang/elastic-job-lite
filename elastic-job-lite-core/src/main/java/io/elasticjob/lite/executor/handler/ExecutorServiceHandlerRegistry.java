@@ -26,6 +26,9 @@ import java.util.concurrent.ExecutorService;
 
 /**
  * 线程池服务处理器注册表.
+ * 作业每次执行时，可能需要分配多个分片项，需要使用线程池实现并行执行
+ * 考虑到不同作业之间的隔离性，通过一个作业的一个线程池实现。
+ * 线程池服务处理器注册表中获取线程池
  * 
  * @author zhangliang
  */
@@ -42,7 +45,9 @@ public final class ExecutorServiceHandlerRegistry {
      * @return 线程池服务
      */
     public static synchronized ExecutorService getExecutorServiceHandler(final String jobName, final ExecutorServiceHandler executorServiceHandler) {
+        //
         if (!REGISTRY.containsKey(jobName)) {
+            //调用createExecutorService创建线程池服务对象
             REGISTRY.put(jobName, executorServiceHandler.createExecutorService(jobName));
         }
         return REGISTRY.get(jobName);

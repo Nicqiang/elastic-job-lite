@@ -99,7 +99,12 @@ public final class LiteJobFacade implements JobFacade {
     public LiteJobConfiguration loadJobRootConfiguration(final boolean fromCache) {
         return configService.load(fromCache);
     }
-    
+
+
+    /**
+     * 当前检验本机时间是否合法
+     * @throws JobExecutionEnvironmentException
+     */
     @Override
     public void checkJobExecutionEnvironment() throws JobExecutionEnvironmentException {
         configService.checkMaxTimeDiffSecondsTolerable();

@@ -208,6 +208,8 @@ public class JobScheduler {
         //设置线程数为1，一个作业的调度，需要配置独有的一个作业调度器（JobScheduler),两者之间的关系是1:1关系
         result.put("org.quartz.threadPool.threadCount", "1");
         result.put("org.quartz.scheduler.instanceName", liteJobConfig.getJobName());
+
+        //设置最大允许超过1ms,作业分片项视为错过执行
         result.put("org.quartz.jobStore.misfireThreshold", "1");
         //作业关闭的钩子
         result.put("org.quartz.plugin.shutdownhook.class", JobShutdownHookPlugin.class.getName());

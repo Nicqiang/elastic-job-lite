@@ -22,6 +22,7 @@ import lombok.extern.slf4j.Slf4j;
 
 /**
  * 默认作业异常处理器.
+ * 打印日志，不会抛异常
  *
  * @author zhangliang
  */

@@ -22,6 +22,19 @@ import io.elasticjob.lite.internal.storage.JobNodePath;
 
 /**
  * 分片节点路径.
+ *
+ * [zk: localhost:2181(CONNECTED) 1] ls /elastic-job-example-lite-java/javaSimpleJob/sharding
+ * [0, 1, 2]
+ * [zk: localhost:2181(CONNECTED) 2] ls /elastic-job-example-lite-java/javaSimpleJob/sharding/0
+ * [running, instance, misfire]
+ * [zk: localhost:2181(CONNECTED) 3] get /elastic-job-example-lite-java/javaSimpleJob/sharding/0/instance
+ * 192.168.16.137@-@56010
+ *
+ * /sharding/${ITEM_ID} 目录下以作业分片项序号( ITEM_ID ) 为数据节点路径存储作业分片项的 instance / running / misfire / disable 数据节点信息。
+ * /sharding/${ITEM_ID}/instance 是临时节点，存储该作业分片项分配到的作业实例主键( JOB_INSTANCE_ID )。在《Elastic-Job-Lite 源码分析 —— 作业分片》详细解析。
+ * /sharding/${ITEM_ID}/running 是临时节点，当该作业分片项正在运行，存储空串( "" )；当该作业分片项不在运行，移除该数据节点。《Elastic-Job-Lite 源码分析 —— 作业执行》的「4.6」执行普通触发的作业已经详细解析。
+ * /sharding/${ITEM_ID}/misfire 是永久节点，当该作业分片项被错过执行，存储空串( "" )；当该作业分片项重新执行，移除该数据节点。《Elastic-Job-Lite 源码分析 —— 作业执行》的「4.7」执行被错过触发的作业已经详细解析。
+ * /sharding/${ITEM_ID}/disable 是永久节点，当该作业分片项被禁用，存储空串( "" )；当该作业分片项被开启，移除数据节点。
  * 
  * @author zhangliang
  */

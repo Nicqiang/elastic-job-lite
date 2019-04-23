@@ -23,6 +23,7 @@ import org.apache.curator.framework.recipes.cache.TreeCacheListener;
 
 /**
  * 作业注册中心的监听器管理者的抽象类.
+ * 作业服务订阅数据
  * 
  * @author zhangliang
  */

@@ -84,9 +84,17 @@ public final class JobScheduleController {
             throw new JobSystemException(ex);
         }
     }
-    
+
+
     private CronTrigger createTrigger(final String cron) {
-        return TriggerBuilder.newTrigger().withIdentity(triggerIdentity).withSchedule(CronScheduleBuilder.cronSchedule(cron).withMisfireHandlingInstructionDoNothing()).build();
+        return TriggerBuilder.newTrigger()
+                .withIdentity(triggerIdentity)
+                .withSchedule(CronScheduleBuilder.cronSchedule(cron)
+                        //设置 Quartz 系统不会立刻再执行任务，
+                        // 而是等到距离目前时间最近的预计时间执行。
+                        // 重新执行被错过执行的作业交给 Elastic-Job-Lite 处理
+                        .withMisfireHandlingInstructionDoNothing())
+                .build();
     }
     
     /**

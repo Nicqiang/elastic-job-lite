@@ -49,7 +49,17 @@ public final class ScriptJobExecutor extends AbstractElasticJobExecutor {
         }
         executeScript(shardingContext, scriptCommandLine);
     }
-    
+
+
+    /**
+     * 使用apache commons exec工具包实现脚本调用
+     * Script类型作业意为脚本类型作业，支持shell，python，perl等所有类型脚本。
+     * 只需通过控制台或代码配置scriptCommandLine即可，无需编码。
+     * 执行脚本路径可包含参数，参数传递完毕后，
+     * 作业框架会自动追加最后一个参数为作业运行时信息
+     * @param shardingContext
+     * @param scriptCommandLine
+     */
     private void executeScript(final ShardingContext shardingContext, final String scriptCommandLine) {
         CommandLine commandLine = CommandLine.parse(scriptCommandLine);
         commandLine.addArgument(GsonFactory.getGson().toJson(shardingContext), false);

@@ -25,14 +25,20 @@ import lombok.RequiredArgsConstructor;
  * <p>
  * 作业节点是在普通的节点前加上作业名称的前缀.
  * </p>
- * 
+ *
+ * /elastic-job-example-lite-java/javaSimpleJob
+ * [leader, servers, config, instances, sharding]
+ *
  * @author zhangliang
  */
 @RequiredArgsConstructor
 public final class JobNodePath {
     
     private static final String LEADER_HOST_NODE = "leader/election/instance";
-    
+
+    /**
+     * 是持久节点，存储Lite作业配置( LiteJobConfiguration ) JSON化字符串
+     */
     private static final String CONFIG_NODE = "config";
     
     private static final String SERVERS_NODE = "servers";

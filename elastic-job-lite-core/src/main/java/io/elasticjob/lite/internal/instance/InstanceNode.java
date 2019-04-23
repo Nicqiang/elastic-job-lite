@@ -22,6 +22,14 @@ import io.elasticjob.lite.internal.storage.JobNodePath;
 
 /**
  * 运行实例节点路径.
+ *
+ * [zk: localhost:2181(CONNECTED) 81] ls /elastic-job-example-lite-java/javaSimpleJob/instances
+ * [192.168.16.137@-@56010]
+ * [zk: localhost:2181(CONNECTED) 82] get /elastic-job-example-lite-java/javaSimpleJob/instances
+ *
+ * /instances 目录下以作业实例主键( JOB_INSTANCE_ID ) 为数据节点路径存储每个运行实例节点。
+ *
+ * /instances/${JOB_INSTANCE_ID} 是临时节点，不存储任何信息，只是空串( "")
  * 
  * @author zhangliang
  */

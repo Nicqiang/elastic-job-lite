@@ -19,6 +19,7 @@ package io.elasticjob.lite.reg.base;
 
 /**
  * 注册中心.
+ * 定义了简单的增删改查注册数据和查询时间的接口方法
  * 
  * @author zhangliang
  */

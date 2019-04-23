@@ -90,7 +90,9 @@ public final class JobRegistry {
     
     /**
      * 添加作业调度控制器.
-     * 
+     *
+     * 作业初始化注册时，初始化缓存
+     *
      * @param jobName 作业名称
      * @param jobScheduleController 作业调度控制器
      * @param regCenter 注册中心
@@ -98,6 +100,8 @@ public final class JobRegistry {
     public void registerJob(final String jobName, final JobScheduleController jobScheduleController, final CoordinatorRegistryCenter regCenter) {
         schedulerMap.put(jobName, jobScheduleController);
         regCenterMap.put(jobName, regCenter);
+
+        //添加注册中心缓存
         regCenter.addCacheData("/" + jobName);
     }
     

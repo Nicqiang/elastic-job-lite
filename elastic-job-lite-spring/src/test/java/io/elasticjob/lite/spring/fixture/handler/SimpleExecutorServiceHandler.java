@@ -23,7 +23,14 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class SimpleExecutorServiceHandler implements ExecutorServiceHandler {
-    
+
+
+    /**
+     * 线程池为newFixedThreadPool
+     * @param jobName 作业名
+     *
+     * @return
+     */
     @Override
     public ExecutorService createExecutorService(final String jobName) {
         return Executors.newFixedThreadPool(1);

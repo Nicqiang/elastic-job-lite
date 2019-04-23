@@ -37,6 +37,7 @@ public final class JobExecutorFactory {
     
     /**
      * 获取作业执行器.
+     * 根据作业类型获取执行器
      *
      * @param elasticJob 分布式弹性作业
      * @param jobFacade 作业内部服务门面服务

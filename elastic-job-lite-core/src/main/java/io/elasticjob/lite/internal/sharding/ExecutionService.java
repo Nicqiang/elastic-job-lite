@@ -70,6 +70,7 @@ public final class ExecutionService {
      */
     public void registerJobCompleted(final ShardingContexts shardingContexts) {
         JobRegistry.getInstance().setJobRunning(jobName, false);
+        //如果没有开启监控作业状态，则无需移除配置
         if (!configService.load(true).isMonitorExecution()) {
             return;
         }

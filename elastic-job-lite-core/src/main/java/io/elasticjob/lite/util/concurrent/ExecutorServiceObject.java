@@ -47,6 +47,8 @@ public final class ExecutorServiceObject {
     
     /**
      * 创建线程池服务对象.
+     * 将{@link ThreadPoolExecutor}转成{@link ExecutorService}
+     * 并增加JVM关闭钩子，实现120s等待任务完成
      *
      * @return 线程池服务对象
      */

@@ -39,7 +39,12 @@ public final class JobTriggerListener extends TriggerListenerSupport {
     public String getName() {
         return "JobTriggerListener";
     }
-    
+
+
+    /**
+     * 监听被错过执行的作业分片项
+     * @param trigger
+     */
     @Override
     public void triggerMisfired(final Trigger trigger) {
         if (null != trigger.getPreviousFireTime()) {

@@ -21,7 +21,9 @@ import io.elasticjob.lite.internal.storage.JobNodePath;
 
 /**
  * 配置节点路径.
- * 
+ *
+ * 是持久节点，存储Lite作业配置( LiteJobConfiguration ) JSON化字符串
+ *
  * @author zhangliang
  */
 public final class ConfigurationNode {

@@ -31,14 +31,23 @@ import java.util.List;
  * @author zhangliang
  */
 public final class DataflowJobExecutor extends AbstractElasticJobExecutor {
-    
+
+
+    /**
+     * 数据流对象的封装
+     */
     private final DataflowJob<Object> dataflowJob;
     
     public DataflowJobExecutor(final DataflowJob<Object> dataflowJob, final JobFacade jobFacade) {
         super(jobFacade);
         this.dataflowJob = dataflowJob;
     }
-    
+
+
+    /**
+     * 处理逻辑
+     * @param shardingContext
+     */
     @Override
     protected void process(final ShardingContext shardingContext) {
         DataflowJobConfiguration dataflowConfig = (DataflowJobConfiguration) getJobRootConfig().getTypeConfig();
@@ -48,7 +57,15 @@ public final class DataflowJobExecutor extends AbstractElasticJobExecutor {
             oneOffExecute(shardingContext);
         }
     }
-    
+
+
+    /**
+     * 流处理
+     * 如果采用流式作业处理方式，建议processData处理数据后更新其状态，
+     * 避免fetchData再次抓取到，从而使得作业永不停止。
+     * 流式数据处理参照TbSchedule设计，适用于不间歇的数据处理
+     * @param shardingContext
+     */
     private void streamingExecute(final ShardingContext shardingContext) {
         List<Object> data = fetchData(shardingContext);
         while (null != data && !data.isEmpty()) {
@@ -59,7 +76,12 @@ public final class DataflowJobExecutor extends AbstractElasticJobExecutor {
             data = fetchData(shardingContext);
         }
     }
-    
+
+
+    /**
+     * 一次处理
+     * @param shardingContext
+     */
     private void oneOffExecute(final ShardingContext shardingContext) {
         List<Object> data = fetchData(shardingContext);
         if (null != data && !data.isEmpty()) {

@@ -23,6 +23,19 @@ import io.elasticjob.lite.internal.storage.JobNodePath;
 
 /**
  * 失效转移节点路径.
+ * 这里大家可能会和我一样比较疑惑，为什么 /leader/failover 放在 /leader 目录下，而不独立成为一个根目录？经过确认，作业失效转移 设计到分布式锁，统一存储在 /leader 目录下
+ *
+ * [zk: localhost:2181(CONNECTED) 2] ls /elastic-job-example-lite-java/javaSimpleJob/leader/failover
+ * [latch, items]
+ * [zk: localhost:2181(CONNECTED) 4] ls /elastic-job-example-lite-java/javaSimpleJob/leader/failover/items
+ * [0]
+ *
+ * /leader/failover/latch 作业失效转移分布式锁，和 /leader/failover/latch 是一致的。
+ * /leader/items/${ITEM_ID} 是永久节点，当某台作业节点 CRASH 时，其分配的作业分片项标记需要进行失效转移，
+ * 存储其分配的作业分片项的 /leader/items/${ITEM_ID} 为空串( "" )；
+ * 当失效转移标记，移除 /leader/items/${ITEM_ID}，存储 /sharding/${ITEM_ID}/failover 为空串( "" )，临时节点，需要进行失效转移执行。
+ * 《Elastic-Job-Lite 源码分析 —— 作业失效转移》详细解析。
+ *
  * 
  * @author zhangliang
  */
