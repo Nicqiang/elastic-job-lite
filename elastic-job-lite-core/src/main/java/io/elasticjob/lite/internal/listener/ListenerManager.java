@@ -33,6 +33,8 @@ import java.util.List;
 
 /**
  * 作业注册中心的监听器管理者.
+ *
+ * 包含不同服务的监听器
  * 
  * @author zhangliang
  */
@@ -83,6 +85,8 @@ public final class ListenerManager {
         triggerListenerManager.start();
         rescheduleListenerManager.start();
         guaranteeListenerManager.start();
+
+        //开启 注册中心连接状态监听器
         jobNodeStorage.addConnectionStateListener(regCenterConnectionStateListener);
     }
 }

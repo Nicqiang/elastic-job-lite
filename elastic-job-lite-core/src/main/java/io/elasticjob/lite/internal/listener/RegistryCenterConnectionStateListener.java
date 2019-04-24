@@ -43,11 +43,19 @@ public final class RegistryCenterConnectionStateListener implements ConnectionSt
         }
         JobScheduleController jobScheduleController = JobRegistry.getInstance().getJobScheduleController(jobName);
         if (ConnectionState.SUSPENDED == newState || ConnectionState.LOST == newState) {
+            //暂停作业
             jobScheduleController.pauseJob();
         } else if (ConnectionState.RECONNECTED == newState) {
+            //持久化作业服务器上线信息
             serverService.persistOnline(serverService.isEnableServer(JobRegistry.getInstance().getJobInstance(jobName).getIp()));
+
+            //持久化作业运行实例上线相关信息
             instanceService.persistOnline();
+
+            //清除本地分配的作业分片项运行中的标记
             executionService.clearRunningInfo(shardingService.getLocalShardingItems());
+
+            //恢复作业调度
             jobScheduleController.resumeJob();
         }
     }

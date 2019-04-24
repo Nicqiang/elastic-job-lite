@@ -60,16 +60,26 @@ public final class ExecutionContextService {
      */
     public ShardingContexts getJobShardingContext(final List<Integer> shardingItems) {
         LiteJobConfiguration liteJobConfig = configService.load(false);
+        //// 移除 正在运行中的作业分片项
         removeRunningIfMonitorExecution(liteJobConfig.isMonitorExecution(), shardingItems);
+
         if (shardingItems.isEmpty()) {
             return new ShardingContexts(buildTaskId(liteJobConfig, shardingItems), liteJobConfig.getJobName(), liteJobConfig.getTypeConfig().getCoreConfig().getShardingTotalCount(), 
                     liteJobConfig.getTypeConfig().getCoreConfig().getJobParameter(), Collections.<Integer, String>emptyMap());
         }
+        // 解析分片参数
         Map<Integer, String> shardingItemParameterMap = new ShardingItemParameters(liteJobConfig.getTypeConfig().getCoreConfig().getShardingItemParameters()).getMap();
         return new ShardingContexts(buildTaskId(liteJobConfig, shardingItems), liteJobConfig.getJobName(), liteJobConfig.getTypeConfig().getCoreConfig().getShardingTotalCount(), 
                 liteJobConfig.getTypeConfig().getCoreConfig().getJobParameter(), getAssignedShardingItemParameterMap(shardingItems, shardingItemParameterMap));
     }
-    
+
+    /**
+     * 创建作业任务ID
+     * taskId = ${JOB_NAME} + @-@ + ${SHARDING_ITEMS} + @-@ + READY + @-@ + ${IP} + @-@ + ${PID}。例如：javaSimpleJob@-@0,1,2@-@READY@-@192.168.3.2@-@38330
+     * @param liteJobConfig
+     * @param shardingItems
+     * @return
+     */
     private String buildTaskId(final LiteJobConfiguration liteJobConfig, final List<Integer> shardingItems) {
         JobInstance jobInstance = JobRegistry.getInstance().getJobInstance(jobName);
         return Joiner.on("@-@").join(liteJobConfig.getJobName(), Joiner.on(",").join(shardingItems), "READY", 
@@ -92,7 +102,14 @@ public final class ExecutionContextService {
     private boolean isRunning(final int shardingItem) {
         return jobNodeStorage.isJobNodeExisted(ShardingNode.getRunningNode(shardingItem));
     }
-    
+
+
+    /**
+     * 获得当前作业节点的分片参数
+     * @param shardingItems
+     * @param shardingItemParameterMap
+     * @return
+     */
     private Map<Integer, String> getAssignedShardingItemParameterMap(final List<Integer> shardingItems, final Map<Integer, String> shardingItemParameterMap) {
         Map<Integer, String> result = new HashMap<>(shardingItemParameterMap.size(), 1);
         for (int each : shardingItems) {

@@ -62,7 +62,10 @@ public final class ElectionListenerManager extends AbstractListenerManager {
         
         @Override
         protected void dataChanged(final String path, final Type eventType, final String data) {
-            if (!JobRegistry.getInstance().isShutdown(jobName) && (isActiveElection(path, data) || isPassiveElection(path, eventType))) {
+            //符合重新选举主节点分成两种情况
+            if (!JobRegistry.getInstance().isShutdown(jobName)
+                    && (isActiveElection(path, data)
+                    || isPassiveElection(path, eventType))) {
                 leaderService.electLeader();
             }
         }
@@ -72,7 +75,8 @@ public final class ElectionListenerManager extends AbstractListenerManager {
         }
         
         private boolean isPassiveElection(final String path, final Type eventType) {
-            return isLeaderCrashed(path, eventType) && serverService.isAvailableServer(JobRegistry.getInstance().getJobInstance(jobName).getIp());
+            return isLeaderCrashed(path, eventType)
+                    && serverService.isAvailableServer(JobRegistry.getInstance().getJobInstance(jobName).getIp());//// 当前节点正在运行中（未挂掉）
         }
         
         private boolean isLeaderCrashed(final String path, final Type eventType) {
@@ -88,11 +92,12 @@ public final class ElectionListenerManager extends AbstractListenerManager {
         
         @Override
         protected void dataChanged(final String path, final Type eventType, final String data) {
+            //作业被禁用时,移除主节点
             if (leaderService.isLeader() && isLocalServerDisabled(path, data)) {
                 leaderService.removeLeader();
             }
         }
-        
+
         private boolean isLocalServerDisabled(final String path, final String data) {
             return serverNode.isLocalServerPath(path) && ServerStatus.DISABLED.name().equals(data);
         }

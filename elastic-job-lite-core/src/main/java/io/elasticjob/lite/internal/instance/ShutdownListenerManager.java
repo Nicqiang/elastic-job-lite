@@ -53,7 +53,13 @@ public final class ShutdownListenerManager extends AbstractListenerManager {
     }
     
     class InstanceShutdownStatusJobListener extends AbstractJobListener {
-        
+
+        /**
+         * 主节点进程远程关闭
+         * @param path 节点path
+         * @param eventType 事件类型
+         * @param data 数据
+         */
         @Override
         protected void dataChanged(final String path, final Type eventType, final String data) {
             if (!JobRegistry.getInstance().isShutdown(jobName) && !JobRegistry.getInstance().getJobScheduleController(jobName).isPaused()

@@ -34,6 +34,7 @@ public abstract class AbstractJobListener implements TreeCacheListener {
     @Override
     public final void childEvent(final CuratorFramework client, final TreeCacheEvent event) throws Exception {
         ChildData childData = event.getData();
+        // 忽略掉非数据变化的事件，例如 event.type 为 CONNECTION_SUSPENDED、CONNECTION_RECONNECTED、CONNECTION_LOST、INITIALIZED 事件
         if (null == childData) {
             return;
         }
@@ -43,6 +44,13 @@ public abstract class AbstractJobListener implements TreeCacheListener {
         }
         dataChanged(path, event.getType(), null == childData.getData() ? "" : new String(childData.getData(), Charsets.UTF_8));
     }
-    
+
+    /**
+     * 节点数据变化
+     * 对节点数据变化进行处理
+     * @param path 节点path
+     * @param eventType 事件类型
+     * @param data 数据
+     */
     protected abstract void dataChanged(final String path, final Type eventType, final String data);
 }

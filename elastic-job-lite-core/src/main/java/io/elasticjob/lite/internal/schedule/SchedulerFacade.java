@@ -146,7 +146,7 @@ public final class SchedulerFacade {
         //开启 作业监听器
         listenerManager.startAllListeners();
 
-        //选举主节点
+        //选举主节点,
         leaderService.electLeader();
 
         //持久化 作业服务器上线信息
@@ -169,6 +169,7 @@ public final class SchedulerFacade {
     
     /**
      * 终止作业调度.
+     * 移除leader
      */
     public void shutdownInstance() {
         if (leaderService.isLeader()) {

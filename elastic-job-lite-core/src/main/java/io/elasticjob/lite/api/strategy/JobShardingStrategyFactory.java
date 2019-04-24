@@ -25,7 +25,7 @@ import lombok.NoArgsConstructor;
 
 /**
  * 作业分片策略工厂.
- * 
+ * 静态类，不允许被继承和创建对象
  * @author zhangliang
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
@@ -39,6 +39,7 @@ public final class JobShardingStrategyFactory {
      */
     public static JobShardingStrategy getStrategy(final String jobShardingStrategyClassName) {
         if (Strings.isNullOrEmpty(jobShardingStrategyClassName)) {
+            //默认分片策略
             return new AverageAllocationJobShardingStrategy();
         }
         try {
